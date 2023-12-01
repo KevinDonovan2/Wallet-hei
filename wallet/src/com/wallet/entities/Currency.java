@@ -12,9 +12,6 @@ public class Currency {
     public String getCurrencyName(){
         return currencyName;
     }
-    public int setId(){
-        return id;
-    }
     public String setCurrencyName(){
         return currencyName;
     }
