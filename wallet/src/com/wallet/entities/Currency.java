@@ -1,24 +1,28 @@
 package com.wallet.entities;
 public class Currency {
-    private int id;
+    private int idCurrency;
     private String currencyName;
-    public Currency(int id, String currencyName){
-        this.id = id;
+    public Currency(int idCurrency, String currencyName){
+        this.idCurrency = idCurrency;
         this.currencyName = currencyName;
     }
-    public int getId(){
-        return id;
+
+    public int getIdCurrency() {
+        return idCurrency;
     }
-    public String getCurrencyName(){
+
+    public String getCurrencyName() {
         return currencyName;
     }
-    public String setCurrencyName(){
-        return currencyName;
+
+    public void setCurrencyName(String currencyName) {
+        this.currencyName = currencyName;
     }
+
     @Override
     public String toString(){
         return "currency:\n" +
-                "id= " + id + "\n" +
+                "id= " + idCurrency + "\n" +
                 "currency: " + currencyName;
     }
 }

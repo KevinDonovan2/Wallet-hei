@@ -1,14 +1,14 @@
 package com.wallet.entities;
 public class Count {
-    private int id;
+    private int idCount;
     private String bankName;
     private String userName;
     private String countNumber;
     private String accountType;
     private Currency currency;
     private double balance;
-        public Count(int id, String bankName, String userName, String countNumber, String accountType, Currency currency, double balance){
-            this.id = id;
+        public Count(int idCount, String bankName, String userName, String countNumber, String accountType, Currency currency, double balance){
+            this.idCount = idCount;
             this.bankName = bankName;
             this.userName = userName;
             this.countNumber = countNumber;
@@ -16,8 +16,8 @@ public class Count {
             this.currency = currency;
             this.balance = balance;
         }
-    public int getId(){
-        return id;
+    public int getIdCount(){
+        return idCount;
     }
     public String getBankName(){
         return bankName;
@@ -59,7 +59,7 @@ public class Count {
     @Override
     public String toString(){
         return "Count: \n" +
-                "id: " + id + "\n" +
+                "id: " + idCount + "\n" +
                 "bank name: " + bankName + "\n" +
                 "username: " + userName + "\n" +
                 "count number: " + countNumber +

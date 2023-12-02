@@ -27,7 +27,7 @@ public class Transaction {
         return amount;
     }
     public int getCountId(){
-        return count.getId();
+        return count.getIdCount();
     }
     public String getCountNumber(){
         return count.getCountNumber();
@@ -58,6 +58,6 @@ public class Transaction {
                     "id: " + id + "\n" +
                     "typetransaction: " + typeTransaction + "\n" +
                     "date: " + dateTransaction + "\n" +
-                    "About your count: id= " + count.getId() + ", count number: " + count.getCountNumber() + ", bank name: " + count.getBankName();
+                    "About your count: id= " + count.getIdCount() + ", count number: " + count.getCountNumber() + ", bank name: " + count.getBankName();
         }
 }
