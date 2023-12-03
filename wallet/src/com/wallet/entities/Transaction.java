@@ -2,20 +2,20 @@ package com.wallet.entities;
 import java.time.LocalDate;
 
 public class Transaction {
-    private int id;
+    private int idTransaction;
     private String typeTransaction;
     private LocalDate dateTransaction;
     private double amount;
     private Count count;
-        public Transaction(int id, String typeTransaction, LocalDate dateTransaction, double amount, Count count){
-            this.id = id;
+        public Transaction(int idTransaction, String typeTransaction, LocalDate dateTransaction, double amount, Count count){
+            this.idTransaction = idTransaction;
             this.typeTransaction = typeTransaction;
             this.dateTransaction = dateTransaction;
             this.amount = amount;
             this.count = count;
         }
-    public int getId(){
-        return id;
+    public int getIdTransaction(){
+        return idTransaction;
     }
     public String getTypeTransaction(){
         return typeTransaction;
@@ -55,7 +55,7 @@ public class Transaction {
         @Override
         public String toString(){
             return "transaction:\n" +
-                    "id: " + id + "\n" +
+                    "id: " + idTransaction + "\n" +
                     "typetransaction: " + typeTransaction + "\n" +
                     "date: " + dateTransaction + "\n" +
                     "About your count: id= " + count.getIdCount() + ", count number: " + count.getCountNumber() + ", bank name: " + count.getBankName();
