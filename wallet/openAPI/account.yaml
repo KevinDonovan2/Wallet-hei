@@ -69,7 +69,7 @@ paths:
           required: true
           description: Unique identifier of the account to be updated
           schema:
-            type: string
+            type: integer
       requestBody:
         required: true
         content:
@@ -113,7 +113,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '204':
           description: Deleded account successfully
@@ -128,7 +128,7 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           description: Unique identifier for the account
         username:
           type: string
