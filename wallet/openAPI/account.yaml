@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: Wallet API - Account Management
+  version: 1.0.0
+  description: Specification for managing accounts within a wallet
+servers:
+  - url: https://wallet.com
+
+paths:
+  /Account:
+# Retrieve the list of account available
+    get:
+      summary: Retrieve account list
+      description: Retrieves a list of all available accounts
+      responses:
+        '200':
+          description: account list successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+
+# create a new account associated with a specific currency
+    post:
+      summary: Create a new account associated with a specific currency
+      description: Create a new account associated with a specific currency.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '201':
+          description: account created successfully
+        '400':
+          description: Bad request or invalid currency
+        '500':
+          description: Server error
+  /account/{id}:
+# update entirely a account
+    put:
+      summary: Update an account entirely
+      description: Update all account attributes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the account to be updated
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: Account successfully updated
+# update of the specific attributes the account
+    patch:
+      summary: Update account attributes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the account to be updated
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bank_name:
+                  type: string
+                  description: New name of the bank associated with the account
+                Account_number:
+                  type: string
+                  description: New account number
+                username:
+                  type: string
+                  description: New account username
+                Account_type:
+                  type: string
+                  description: New account type
+                balance:
+                  type: number
+                  description: New account balance
+                currency:
+                  type: string
+                  description: New account currency
+      responses:
+        '200':
+          description: account attributes successfully updated
+        '400':
+          description:  Query error or invalid attributes
+        '404':
+          description: account not found
+        '500':
+          description: Server error
+# Delete account by id
+    delete:
+      summary: Delete an account by its ID
+      description: Allows you to delete a specific account using its id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleded account successfully
+        '404':
+          description: account not found
+        '500':
+          description: Server error
+
+components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the account
+        username:
+          type: string
+          description: Username associated with the account
+        account_number:
+          type: string
+          description: account number
+        account_type:
+          type: string
+          description: Type of account
+          enum:
+            - current
+            - saving
+        bank_name:
+          type: string
+          description: Name of the bank
+        balance:
+          type: number
+          description: account balance
+        currency:
+          type: string
+          description: Code of the currency associated with the account
+      required:
+        - username
+        - account_number
+        - account_type
+        - bank_name
+        - balance
+        - currency
