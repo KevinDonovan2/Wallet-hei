@@ -7,7 +7,7 @@ public class Count {
     private String accountType;
     private Currency currency;
     private double balance;
-        public Count(int idCount, String bankName, String userName, String countNumber, String accountType, Currency currency, double balance){
+        public Count(int idCount, String bankName, String userName, String countNumber, String accountType, int currency, double balance){
             this.idCount = idCount;
             this.bankName = bankName;
             this.userName = userName;
@@ -31,7 +31,7 @@ public class Count {
     public String getAccountType(){
         return accountType;
     }
-    public Currency getCurrency(){
+    public int getCurrency(){
         return currency;
     }
     public double getBalance(){

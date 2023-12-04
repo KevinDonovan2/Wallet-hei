@@ -7,7 +7,7 @@ public class Transaction {
     private LocalDate dateTransaction;
     private double amount;
     private Count count;
-        public Transaction(int idTransaction, String typeTransaction, LocalDate dateTransaction, double amount, Count count){
+        public Transaction(int idTransaction, String typeTransaction, LocalDate dateTransaction, double amount, int count){
             this.idTransaction = idTransaction;
             this.typeTransaction = typeTransaction;
             this.dateTransaction = dateTransaction;

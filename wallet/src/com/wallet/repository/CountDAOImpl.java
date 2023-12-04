@@ -21,7 +21,7 @@ public class CountDAOImpl implements CountDAO {
             statement.setString(2,e.getUserName());
             statement.setString(3,e.getCountNumber());
             statement.setString(4,e.getAccountType());
-            statement.setString(5, e.getCurrency());
+            statement.setInt(5, e.getCurrency());
             statement.setDouble(6, Double.parseDouble("balance"));
 
             statement.executeUpdate();
@@ -46,7 +46,7 @@ public class CountDAOImpl implements CountDAO {
                         resultSet.getString("userName"),
                         resultSet.getString("countNumber"),
                         resultSet.getString("accountType"),
-                        resultSet.getCu(),
+                        resultSet.getInt("idCurrency"),
                         resultSet.getDouble("balance")
 
                 ));
@@ -73,7 +73,7 @@ public class CountDAOImpl implements CountDAO {
                         resultSet.getString("userName"),
                         resultSet.getString("countNumber"),
                         resultSet.getString("accountType"),
-                        resultSet.getCurrency(),
+                        resultSet.getInt("idCurrency"),
                         resultSet.getDouble("balance")
                 );
             }
@@ -92,7 +92,7 @@ public class CountDAOImpl implements CountDAO {
             statement.setString(2,e.getUserName());
             statement.setString(3,e.getCountNumber());
             statement.setString(4,e.getAccountType());
-            statement.setString(5, e.getCurrency());
+            statement.setInt(5, e.getCurrency());
             statement.setDouble(6, Double.parseDouble("balance"));
             statement.setInt(6,e.getIdCount());
 

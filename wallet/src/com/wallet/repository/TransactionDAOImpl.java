@@ -44,7 +44,7 @@ public class TransactionDAOImpl implements TransactionDAO{
                         resultSet.getString("typeTransaction"),
                         resultSet.getDate("dateTransaction").toLocalDate(),
                         resultSet.getDouble("amount"),
-                        resultSet.ge("count")
+                        resultSet.getInt("idCount")
 
                 ));
             }
@@ -69,7 +69,7 @@ public class TransactionDAOImpl implements TransactionDAO{
                         resultSet.getString("typeTransaction"),
                         resultSet.getDate("dateTransaction").toLocalDate(),
                         resultSet.getDouble("amount"),
-                        resultSet.ge("count")
+                        resultSet.getInt("idCount")
                 );
             }
         }
