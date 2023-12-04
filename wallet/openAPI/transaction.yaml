@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: Wallet API - Tansaction Management
+  version: 1.0.0
+  description: Specification for managing transaction within a wallet
+servers:
+  - url: https://wallet.com
+paths:
+  /transaction:
+    get:
+      summary: Transaction list
+      responses:
+        '200': 
+          description: Transaction list successfully retrieved
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Transaction'
+    post:
+      summary: Create a new transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction' 
+      responses:
+        '201':
+          description: Transaction successfully created
+  /transactions/{id}:
+    put:
+        summary: Update a transaction by ID
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction' 
+        responses:
+          '200':
+            description: Transaction successfully updated
+    delete:
+      summary:  Delete an transaction by its ID
+      description: Allows you to delete a specific transaction using its id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleded transaction successfully
+        '404':
+          description: transaction not found
+        '500':
+          description: Server error
+components:
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        type_transaction:
+          type: string
+        date_transaction:
+          type: string
+          format: date
+        amount:
+          type: number
+        account_id:
+          $ref: './account.yaml#/components/schemas/Account'
+      required:
+        - type_transaction
+        - date_transaction
+        - amount
+        - account
