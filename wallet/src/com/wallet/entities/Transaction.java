@@ -6,7 +6,7 @@ public class Transaction {
     private String typeTransaction;
     private LocalDate dateTransaction;
     private double amount;
-    private Count count;
+    private int count;
         public Transaction(int idTransaction, String typeTransaction, LocalDate dateTransaction, double amount, int count){
             this.idTransaction = idTransaction;
             this.typeTransaction = typeTransaction;
@@ -27,15 +27,9 @@ public class Transaction {
         return amount;
     }
     public int getCountId(){
-        return count.getIdCount();
+        return count;
     }
-    public String getCountNumber(){
-        return count.getCountNumber();
-    }
-    public String getBankName(){
-        return count.getBankName();
-    }
-   
+
         public String setTypeTransaction(){
             return typeTransaction;
         }
@@ -45,19 +39,12 @@ public class Transaction {
         public double setAmount(){
             return amount;
         }
-        public String setCountNumber(){
-            return count.setCountNumber();
-        }
-        public String setBankName(){
-            return count.setBankName();
-        }
   
         @Override
         public String toString(){
             return "transaction:\n" +
                     "id: " + idTransaction + "\n" +
                     "typetransaction: " + typeTransaction + "\n" +
-                    "date: " + dateTransaction + "\n" +
-                    "About your count: id= " + count.getIdCount() + ", count number: " + count.getCountNumber() + ", bank name: " + count.getBankName();
+                    "date: " + dateTransaction + "\n";
         }
 }

@@ -7,9 +7,68 @@ servers:
   - url: https://wallet.com
 
 paths:
-  /Account:
+  /transaction:
+    get:
+      tags:
+        - Transaction
+      summary: Transaction list
+      responses:
+        '200': 
+          description: Transaction list successfully retrieved
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Transaction'
+    post:
+      tags:
+          - Transaction
+      summary: Create a new transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction' 
+      responses:
+        '201':
+          description: Transaction successfully created
+  /transactions/{id}:
+    put:
+        tags:
+          - Transaction
+        summary: Update a transaction by ID
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction' 
+        responses:
+          '200':
+            description: Transaction successfully updated
+    delete:
+      tags:
+          - Transaction
+      summary:  Delete an transaction by its ID
+      description: Allows you to delete a specific transaction using its id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Deleded transaction successfully
+        '404':
+          description: transaction not found
+        '500':
+          description: Server error
+  /account:
 # Retrieve the list of account available
     get:
+      tags:
+        - Account
       summary: Retrieve account list
       description: Retrieves a list of all available accounts
       responses:
@@ -20,10 +79,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Account'
+                  $ref: '#/components/schemas/account'
 
 # create a new account associated with a specific currency
     post:
+      tags:
+        - Account
       summary: Create a new account associated with a specific currency
       description: Create a new account associated with a specific currency.
       requestBody:
@@ -31,7 +92,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Account'
+              $ref: '#/components/schemas/account'
       responses:
         '201':
           description: account created successfully
@@ -42,6 +103,8 @@ paths:
   /account/{id}:
 # update entirely a account
     put:
+      tags:
+        - Account
       summary: Update an account entirely
       description: Update all account attributes
       parameters:
@@ -56,12 +119,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Account'
+              $ref: '#/components/schemas/account'
       responses:
         '200':
           description: Account successfully updated
 # update of the specific attributes the account
     patch:
+      tags:
+        - Account
       summary: Update account attributes
       parameters:
         - name: id
@@ -106,6 +171,8 @@ paths:
           description: Server error
 # Delete account by id
     delete:
+      tags:
+        - Account
       summary: Delete an account by its ID
       description: Allows you to delete a specific account using its id
       parameters:
@@ -124,7 +191,26 @@ paths:
 
 components:
   schemas:
-    Account:
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        type_transaction:
+          type: string
+        date_transaction:
+          type: string
+          format: date
+        amount:
+          type: number
+        account_id:
+          $ref: '#/components/schemas/account'
+      required:
+        - type_transaction
+        - date_transaction
+        - amount
+        - account
+    account:
       type: object
       properties:
         id:
