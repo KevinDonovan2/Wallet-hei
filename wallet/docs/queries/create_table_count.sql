@@ -4,6 +4,6 @@ create table if not exists count (
     username varchar(50),
     countNumber varchar(255) not null,
     accoutType varchar(50) not null,
-    balance double,
+    balance double precision,
     idCurrency int references currency(id)
 );
