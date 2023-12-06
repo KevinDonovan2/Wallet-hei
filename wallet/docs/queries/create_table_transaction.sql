@@ -1,5 +1,5 @@
 create table if not exists transaction(
-    id serial primary key,
+    idTransaction serial primary key,
     amount float,
     typeTransaction varchar(255),
     datetransaction date,

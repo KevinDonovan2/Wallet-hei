@@ -18,7 +18,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Transaction'
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Transaction'
     post:
       tags:
         - Transaction

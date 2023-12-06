@@ -1,4 +1,4 @@
 create table if not exists currency(
-    id serial primary key,
+    idCurrency serial primary key,
     currencyName varchar(50)
 );
