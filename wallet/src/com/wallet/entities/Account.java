@@ -52,7 +52,7 @@ public class Account {
     public void setAccountType(String accountType){
         this.accountType = accountType;
     }
-
+    @Override
     public String toString(){
         return "Yout account: \n" + 
         "id account: " + accountId + "\n" +
