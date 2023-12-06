@@ -22,7 +22,7 @@ public class Balance {
     public LocalDate setLastDateUpdate(){
         return lastDateUpdate;
     }
-    
+    @Override
     public String toString(){
         return "The balance: \n" + "\n" +
                 "Amount value: " + amount + "\n" +
