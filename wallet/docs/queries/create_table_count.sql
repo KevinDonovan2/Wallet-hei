@@ -1,9 +1,13 @@
-create table if not exists count (
-    idCount serial primary key,
-    bankName varchar(50) not null,
-    username varchar(50),
-    countNumber varchar(255) not null,
-    accoutType varchar(50) not null,
-    balance double precision,
-    idCurrency int references currency(id)
+DROP TABLE IF EXISTS account;
+CREATE TYPE balance as(
+    amount double,
+    lastDateUpdate timestamp without time zone
+);
+CREATE TABLE IF NOT EXISTS account(
+    accountId serial primary key,
+    accountName varchar(50) not null,
+    balance balance not null,
+    transactions text,
+    idCurrencyCount int reference currency(currencyId),
+    accountType varchar(20) CHECK (accountType IN('Bank', 'Cash', 'Mobile money')) not null
 );
