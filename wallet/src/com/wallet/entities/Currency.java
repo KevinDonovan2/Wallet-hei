@@ -28,7 +28,7 @@ public class Currency {
    public String setCurrencyCode(){
     return currencyCode;
    }
-
+   @Override
    public String toString(){
     return "Currency: \n" +
             "id currency: " + currencyId + "\n" +
