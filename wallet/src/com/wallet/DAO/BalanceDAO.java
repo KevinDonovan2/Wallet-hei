@@ -46,7 +46,7 @@ public class BalanceDAO implements CrudOperations<Balance> {
             for (Balance balance : toSave) {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     preparedStatement.setDouble(1, balance.getAmount());
-                    preparedStatement.setDate(2, java.sql.Date.valueOf(balance.getLastDateUpdate()));
+                    preparedStatement.setObject(2, balance.getLastDateUpdate());
     
                     int result = preparedStatement.executeUpdate();
                     if (result > 0) {
@@ -60,7 +60,6 @@ public class BalanceDAO implements CrudOperations<Balance> {
     
         return savedBalance;
     }
-    
 
     @Override
     public Balance save(Balance balance) {
@@ -68,7 +67,7 @@ public class BalanceDAO implements CrudOperations<Balance> {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setDouble(1, balance.getAmount());
-            preparedStatement.setDate(2, java.sql.Date.valueOf(balance.getLastDateUpdate()));
+            preparedStatement.setObject(2, balance.getLastDateUpdate());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,6 +75,24 @@ public class BalanceDAO implements CrudOperations<Balance> {
 
         return balance;
     }
+    @Override
+    public Balance update(Balance toUpdate) {
+        String query = "UPDATE balance SET amount = ? WHERE lastDateUpdate = ?";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setDouble(1, toUpdate.getAmount());
+            preparedStatement.setObject(2, toUpdate.getLastDateUpdate());     
+            int result = preparedStatement.executeUpdate();
+            if (result > 0) {
+                return toUpdate;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
 
     @Override
     public Balance delete(Balance toDelete) {
@@ -83,7 +100,7 @@ public class BalanceDAO implements CrudOperations<Balance> {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setDouble(1, toDelete.getAmount());
-            preparedStatement.setDate(2, java.sql.Date.valueOf(toDelete.getLastDateUpdate()));
+            preparedStatement.setObject(2, toDelete.getLastDateUpdate());
             int result = preparedStatement.executeUpdate();
             if (result > 0) {
                 return toDelete;
@@ -96,7 +113,7 @@ public class BalanceDAO implements CrudOperations<Balance> {
 
     private Balance convertToBalance(ResultSet resultSet) throws SQLException {
         double amount = resultSet.getDouble("amount");
-        LocalDate lastDateUpdate = resultSet.getDate("lastDateUpdate").toLocalDate();
+        LocalDate lastDateUpdate = (LocalDate) resultSet.getObject("lastDateUpdate");
         return new Balance(amount, lastDateUpdate);
     }
 }
