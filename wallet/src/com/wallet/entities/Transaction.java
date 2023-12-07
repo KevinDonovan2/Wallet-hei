@@ -16,19 +16,19 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public int gettransactionId(){
+    public int getTransactionId(){
         return transactionId;
     }
     public String getlabel(){
         return label;
     }
-    public LocalDateTime gettransactionDateTime(){
+    public LocalDateTime getTransactionDateTime(){
         return transactionDateTime;
     }
     public double getAmount(){
         return amount;
     }
-    public String gettransactionTypeId(){
+    public String getTransactionTypeId(){
         return transactionType;
     }
 
