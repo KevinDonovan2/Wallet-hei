@@ -1,14 +1,14 @@
 package com.wallet.entities;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Transaction {
     private int transactionId;
     private String label;
     private double amount;
-    private LocalDate transactionDateTime;
+    private LocalDateTime transactionDateTime;
     private String transactionType; 
 
-    public Transaction(int transactionId, String label, double amount, LocalDate transactionDateTime, String transactionType){
+    public Transaction(int transactionId, String label, double amount, LocalDateTime transactionDateTime, String transactionType){
         this.transactionId = transactionId;
         this.label = label;
         this.transactionDateTime = transactionDateTime;
@@ -22,7 +22,7 @@ public class Transaction {
     public String getlabel(){
         return label;
     }
-    public LocalDate gettransactionDateTime(){
+    public LocalDateTime gettransactionDateTime(){
         return transactionDateTime;
     }
     public double getAmount(){
@@ -38,7 +38,7 @@ public class Transaction {
     public void setlabel(String label){
         this.label = label;
     }
-    public void settransactionDateTime(LocalDate transactionDateTime){
+    public void settransactionDateTime(LocalDateTime transactionDateTime){
         this.transactionDateTime = transactionDateTime;
     }
     public void setAmount(double amount){
