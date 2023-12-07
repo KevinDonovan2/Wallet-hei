@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,6 @@ public class AccountDAO implements CrudOperations<Account> {
 
     @Override
     public List<Account> saveAll(List<Account> toSave) {
-        // Implement this method if needed
         return null;
     }
 
