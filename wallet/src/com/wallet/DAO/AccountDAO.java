@@ -62,7 +62,11 @@ public class AccountDAO implements CrudOperations<Account> {
 
         return account;
     }
-
+    // ty mba ataovy fa leo be aho
+    @Override
+    public Account update(Account toUpdate){
+        return null;
+    }
     @Override
     public Account delete(Account toDelete) {
         String query = "DELETE FROM account WHERE accountId = ?";
@@ -96,7 +100,6 @@ public class AccountDAO implements CrudOperations<Account> {
             Transaction transaction = new Transaction(transactionId, label, amount, transactionDateTime, transactionType);
             transactions.add(transaction);
         }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
