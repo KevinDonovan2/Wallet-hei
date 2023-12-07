@@ -74,6 +74,25 @@ public class CurrencyDAO implements CrudOperations<Currency> {
 
         return currency;
     }
+    @Override
+    public Currency update(Currency toUpdate) {
+        String query = "UPDATE currency SET currencyName = ?, currencyCode = ? WHERE currencyId = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, toUpdate.getCurrencyName());
+            preparedStatement.setString(2, toUpdate.getCurrencyCode());
+            preparedStatement.setInt(3, toUpdate.getCurrencyId());
+
+            int result = preparedStatement.executeUpdate();
+            if (result > 0) {
+                return toUpdate;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     @Override
     public Currency delete(Currency toDelete) {
