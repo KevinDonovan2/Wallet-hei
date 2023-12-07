@@ -1,50 +1,60 @@
 package com.wallet.entities;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Transaction {
-    private int idTransaction;
-    private String typeTransaction;
-    private LocalDate dateTransaction;
+    private int transactionId;
+    private String label;
     private double amount;
-    private int count;
-        public Transaction(int idTransaction, String typeTransaction, LocalDate dateTransaction, double amount, int count){
-            this.idTransaction = idTransaction;
-            this.typeTransaction = typeTransaction;
-            this.dateTransaction = dateTransaction;
-            this.amount = amount;
-            this.count = count;
-        }
-    public int getIdTransaction(){
-        return idTransaction;
+    private LocalDateTime transactionDateTime;
+    private String transactionType; 
+
+    public Transaction(int transactionId, String label, double amount, LocalDateTime transactionDateTime, String transactionType){
+        this.transactionId = transactionId;
+        this.label = label;
+        this.transactionDateTime = transactionDateTime;
+        this.amount = amount;
+        this.transactionType = transactionType;
     }
-    public String getTypeTransaction(){
-        return typeTransaction;
+
+    public int getTransactionId(){
+        return transactionId;
     }
-    public LocalDate getDateTransaction(){
-        return dateTransaction;
+    public String getlabel(){
+        return label;
+    }
+    public LocalDateTime getTransactionDateTime(){
+        return transactionDateTime;
     }
     public double getAmount(){
         return amount;
     }
-    public int getCountId(){
-        return count;
+    public String getTransactionTypeId(){
+        return transactionType;
     }
 
-        public String setTypeTransaction(){
-            return typeTransaction;
-        }
-        public LocalDate setDateTransaction(){
-            return dateTransaction;
-        }
-        public double setAmount(){
-            return amount;
-        }
+    public void setTransactionId(int transactionId){
+        this.transactionId = transactionId;
+    }
+    public void setlabel(String label){
+        this.label = label;
+    }
+    public void settransactionDateTime(LocalDateTime transactionDateTime){
+        this.transactionDateTime = transactionDateTime;
+    }
+    public void setAmount(double amount){
+        this.amount = amount;
+    }
+    public void setAccountType(String transactionType){
+        this.transactionType = transactionType;
+    }
   
-        @Override
-        public String toString(){
-            return "transaction:\n" +
-                    "id: " + idTransaction + "\n" +
-                    "typetransaction: " + typeTransaction + "\n" +
-                    "date: " + dateTransaction + "\n";
-        }
+    @Override
+    public String toString(){
+        return "transaction:\n" +
+                "id transaction: " + transactionId + "\n" +
+                "label: " + label + "\n" +
+                "date of transaction: " + transactionDateTime + "\n" +
+                " amount: " + amount + "\n" +
+                "transaction type: " + transactionType;
+    }
 }
