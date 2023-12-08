@@ -52,9 +52,9 @@ public class AccountDAO implements CrudOperations<Account> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, account.getAccountId());
             preparedStatement.setString(2, account.getAccountName());
-            preparedStatement.setDouble(3, account.getBalance().getAmount());
+            preparedStatement.setDouble(3, account.getBalance());
             preparedStatement.setInt(4, account.getCurrency().getCurrencyId());
-            preparedStatement.setString(5, account.getAccountType());
+            preparedStatement.setString(5, account.get());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
