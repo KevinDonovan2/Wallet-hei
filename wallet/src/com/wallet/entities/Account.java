@@ -1,67 +1,130 @@
 package com.wallet.entities;
+
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
 public class Account {
     private int accountId;
     private String accountName;
-    private Balance balance;
-    private List<Transaction> transactionList;
+    private double balance;
+    private Date lastUpdateDate;
+    private List<Transaction> transactions;
     private Currency currency;
-    private String accountType;
-    
-    public Account(int accountId, String accountName, Balance balance, Currency currency, String accountType) {
+    private AccountType type;
+
+    public Account(int accountId, String accountName, double balance, Date lastUpdateDate, List<Transaction> transactions, Currency currency, AccountType type) {
         this.accountId = accountId;
         this.accountName = accountName;
         this.balance = balance;
+        this.lastUpdateDate = lastUpdateDate;
+        this.transactions = transactions;
         this.currency = currency;
-        this.accountType = accountType;
-        this.transactionList = new ArrayList<>();
+        this.type = type;
     }
 
-    public int getAccountId(){
+    public int getAccountId() {
         return accountId;
     }
-    public String getAccountName(){
-        return accountName;
-    }
-    public Balance getBalance(){
-        return balance;
-    }
-    public List<Transaction> getTransactions() {
-        return transactionList;
-    }
-    public Currency getCurrency(){
-        return currency;
-    }
-    public String getAccountType(){
-        return accountType;
-    }
+
     public void setAccountId(int accountId) {
         this.accountId = accountId;
     }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
     public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
-    public void setBalance(Balance balance) {
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
         this.balance = balance;
     }
+
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
-    public void setAccountType(String accountType){
-        this.accountType = accountType;
+
+    public AccountType getType() {
+        return type;
     }
-    public void addTransaction(Transaction transaction) {
-        this.transactionList.add(transaction);
+
+    public void setType(AccountType type) {
+        this.type = type;
     }
+
     @Override
-    public String toString(){
-        return "Yout account: \n" + 
-        "id account: " + accountId + "\n" +
-        "account name: " + accountName + "\n" +
-        "Your balance: " + balance.getAmount() + "\n" +
-        "transaction: " + transactionList+ "\n" +
-        "your currency count: " + currency + "\n" +
-        "the account type: " + accountType;
+    public String toString() {
+        return "Account{" +
+                "id=" + accountId +
+                ", name='" + accountName + '\'' +
+                ", balance=" + balance +
+                ", lastUpdateDate=" + lastUpdateDate +
+                ", transactions=" + transactions +
+                ", currency=" + currency +
+                ", type=" + type +
+                '}';
+    }
+    public Account executeTransaction(Transaction transaction) {
+        if (getType() == AccountType.BANK || getBalance() >= transaction.getAmount()) {
+            Transaction newTransaction = new Transaction(
+                    transaction.getTransactionId(),
+                    transaction.getlabel(),
+                    transaction.getAmount(),
+                    transaction.getTransactionDateTime(),
+                    transaction.getType()
+            );
+
+
+            getTransactions().add(newTransaction);
+
+            if (transaction.getType() == TransactionType.DEBIT) {
+                updateBalance(-transaction.getAmount());
+            } else {
+                updateBalance(transaction.getAmount());
+            }
+
+            return new Account(
+                    getAccountId(),
+                    getAccountName(),
+                    getBalance(),
+                    getLastUpdateDate(),
+                    getTransactions(),
+                    getCurrency(),
+                    getType()
+            );
+        } else {
+            System.out.println("Solde insuffisant pour effectuer la transaction.");
+            return this;
+        }
+    }
+    private void updateBalance(double amount) {
+        setBalance(getBalance() + amount);
     }
 }

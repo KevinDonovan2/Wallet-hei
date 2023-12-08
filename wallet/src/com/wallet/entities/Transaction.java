@@ -1,19 +1,19 @@
 package com.wallet.entities;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Transaction {
     private int transactionId;
     private String label;
     private double amount;
-    private LocalDateTime transactionDateTime;
-    private String transactionType; 
+    private Date transactionDateTime;
+    private TransactionType type;
 
-    public Transaction(int transactionId, String label, double amount, LocalDateTime transactionDateTime, String transactionType){
+    public Transaction(int transactionId, String label, double amount, Date transactionDateTime, TransactionType type){
         this.transactionId = transactionId;
         this.label = label;
         this.transactionDateTime = transactionDateTime;
         this.amount = amount;
-        this.transactionType = transactionType;
+        this.type = type;
     }
 
     public int getTransactionId(){
@@ -22,14 +22,19 @@ public class Transaction {
     public String getlabel(){
         return label;
     }
-    public LocalDateTime getTransactionDateTime(){
+    public Date getTransactionDateTime(){
         return transactionDateTime;
     }
     public double getAmount(){
         return amount;
     }
-    public String getTransactionTypeId(){
-        return transactionType;
+
+    public TransactionType getType() {
+        return type;
+    }
+
+    public void setType(TransactionType type) {
+        this.type = type;
     }
 
     public void setTransactionId(int transactionId){
@@ -38,16 +43,16 @@ public class Transaction {
     public void setlabel(String label){
         this.label = label;
     }
-    public void settransactionDateTime(LocalDateTime transactionDateTime){
+    public void settransactionDateTime(Date transactionDateTime){
         this.transactionDateTime = transactionDateTime;
     }
     public void setAmount(double amount){
         this.amount = amount;
     }
     public void setAccountType(String transactionType){
-        this.transactionType = transactionType;
+        this.type = type;
     }
-  
+
     @Override
     public String toString(){
         return "transaction:\n" +
@@ -55,6 +60,6 @@ public class Transaction {
                 "label: " + label + "\n" +
                 "date of transaction: " + transactionDateTime + "\n" +
                 " amount: " + amount + "\n" +
-                "transaction type: " + transactionType;
+                "transaction type: " + type;
     }
 }
