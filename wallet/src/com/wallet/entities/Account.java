@@ -127,4 +127,19 @@ public class Account {
     private void updateBalance(double amount) {
         setBalance(getBalance() + amount);
     }
+    public double getBalanceAtDateTime(Date dateTime) {
+        double balance = 0.0;
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getTransactionDateTime().before(dateTime) || transaction.getTransactionDateTime().equals(dateTime)) {
+                if (transaction.getType() == TransactionType.CREDIT) {
+                    balance += transaction.getAmount();
+                } else if (transaction.getType() == TransactionType.DEBIT) {
+                    balance -= transaction.getAmount();
+                }
+            }
+        }
+
+        return balance;
+    }
 }
