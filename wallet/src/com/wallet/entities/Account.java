@@ -142,4 +142,24 @@ public class Account {
 
         return balance;
     }
+    public List<Double> getBalanceHistoryInDateTimeRange(Date startDateTime, Date endDateTime) {
+        List<Double> balanceHistory = new ArrayList<>();
+        double currentBalance = 0.0;
+
+        for (Transaction transaction : transactions) {
+            if ((transaction.getTransactionDateTime().after(startDateTime) || transaction.getTransactionDateTime().equals(startDateTime))
+                    && transaction.getTransactionDateTime().before(endDateTime)) {
+
+                if (transaction.getType() == TransactionType.CREDIT) {
+                    currentBalance += transaction.getAmount();
+                } else if (transaction.getType() == TransactionType.DEBIT) {
+                    currentBalance -= transaction.getAmount();
+                }
+
+                balanceHistory.add(currentBalance);
+            }
+        }
+
+        return balanceHistory;
+    }
 }
