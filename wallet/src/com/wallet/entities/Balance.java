@@ -1,22 +1,23 @@
 package com.wallet.entities;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Balance {
-    private double amount;
+    private BigDecimal amount;
     private LocalDate lastDateUpdate;
     
     public Balance(double amount, LocalDate lastDateUpdate){
-        this.amount = amount;
+        this.amount = BigDecimal.valueOf(amount);
         this.lastDateUpdate = lastDateUpdate;
     }
 
-    public  double getAmount(){
+    public BigDecimal getAmount(){
         return amount;
     }
     public LocalDate getLastDateUpdate(){
         return lastDateUpdate;
     }
-     public  double setAmount(){
+     public  BigDecimal setAmount(){
         return amount;
     }
     public LocalDate setLastDateUpdate(){
