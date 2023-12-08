@@ -45,7 +45,7 @@ public class BalanceDAO implements CrudOperations<Balance> {
         try {
             for (Balance balance : toSave) {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                    preparedStatement.setDouble(1, balance.getAmount());
+                    preparedStatement.setBigDecimal(1, balance.getAmount());
                     preparedStatement.setObject(2, balance.getLastDateUpdate());
     
                     int result = preparedStatement.executeUpdate();
@@ -66,7 +66,7 @@ public class BalanceDAO implements CrudOperations<Balance> {
         String query = "INSERT INTO balance (amount, lastDateUpdate) VALUES (?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setDouble(1, balance.getAmount());
+            preparedStatement.setBigDecimal(1, balance.getAmount());
             preparedStatement.setObject(2, balance.getLastDateUpdate());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class BalanceDAO implements CrudOperations<Balance> {
         String query = "UPDATE balance SET amount = ? WHERE lastDateUpdate = ?";
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setDouble(1, toUpdate.getAmount());
+            preparedStatement.setBigDecimal(1, toUpdate.getAmount());
             preparedStatement.setObject(2, toUpdate.getLastDateUpdate());     
             int result = preparedStatement.executeUpdate();
             if (result > 0) {
@@ -99,7 +99,7 @@ public class BalanceDAO implements CrudOperations<Balance> {
         String query = "DELETE FROM balance WHERE amount = ? AND lastDateUpdate = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setDouble(1, toDelete.getAmount());
+            preparedStatement.setBigDecimal(1, toDelete.getAmount());
             preparedStatement.setObject(2, toDelete.getLastDateUpdate());
             int result = preparedStatement.executeUpdate();
             if (result > 0) {

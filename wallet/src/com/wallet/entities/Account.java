@@ -8,16 +8,14 @@ public class Account {
     private int accountId;
     private String accountName;
     private double balance;
-    private Date lastUpdateDate;
     private List<Transaction> transactions;
     private Currency currency;
     private AccountType type;
 
-    public Account(int accountId, String accountName, double balance, Date lastUpdateDate, List<Transaction> transactions, Currency currency, AccountType type) {
+    public Account(int accountId, String accountName, double balance, List<Transaction> transactions, Currency currency, AccountType type) {
         this.accountId = accountId;
         this.accountName = accountName;
         this.balance = balance;
-        this.lastUpdateDate = lastUpdateDate;
         this.transactions = transactions;
         this.currency = currency;
         this.type = type;
@@ -45,14 +43,6 @@ public class Account {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-
-    public Date getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
     }
 
     public List<Transaction> getTransactions() {
@@ -85,7 +75,6 @@ public class Account {
                 "id=" + accountId +
                 ", name='" + accountName + '\'' +
                 ", balance=" + balance +
-                ", lastUpdateDate=" + lastUpdateDate +
                 ", transactions=" + transactions +
                 ", currency=" + currency +
                 ", type=" + type +
@@ -114,7 +103,6 @@ public class Account {
                     getAccountId(),
                     getAccountName(),
                     getBalance(),
-                    getLastUpdateDate(),
                     getTransactions(),
                     getCurrency(),
                     getType()

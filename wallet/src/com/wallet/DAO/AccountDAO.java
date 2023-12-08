@@ -1,10 +1,7 @@
 package com.wallet.DAO;
 
 import com.wallet.Utils.CrudOperations;
-import com.wallet.entities.Account;
-import com.wallet.entities.Balance;
-import com.wallet.entities.Currency;
-import com.wallet.entities.Transaction;
+import com.wallet.entities.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AccountDAO implements CrudOperations<Account> {
@@ -47,14 +45,14 @@ public class AccountDAO implements CrudOperations<Account> {
 
     @Override
     public Account save(Account account) {
-        String query = "INSERT INTO account (accountId, accountName, balance, currencyId, accountType) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO account (accountId, accountName, balance, currencyId, type) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, account.getAccountId());
             preparedStatement.setString(2, account.getAccountName());
             preparedStatement.setDouble(3, account.getBalance());
             preparedStatement.setInt(4, account.getCurrency().getCurrencyId());
-            preparedStatement.setString(5, account.get());
+            preparedStatement.setString(5, String.valueOf(account.getType()));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,7 +60,6 @@ public class AccountDAO implements CrudOperations<Account> {
 
         return account;
     }
-    // ty mba ataovy fa leo be aho
     @Override
     public Account update(Account toUpdate){
         return null;
@@ -94,10 +91,10 @@ public class AccountDAO implements CrudOperations<Account> {
             int transactionId = resultSet.getInt("transactionId");
             String label = resultSet.getString("label");
             double amount = resultSet.getDouble("amount");
-            LocalDateTime transactionDateTime = resultSet.getTimestamp("transactionDateTime").toLocalDateTime();
-            String transactionType = resultSet.getString("transactionType");
+            Date transactionDateTime = resultSet.getTimestamp("transactionDateTime");
+            TransactionType type = TransactionType.valueOf(resultSet.getString("transactionType"));
 
-            Transaction transaction = new Transaction(transactionId, label, amount, transactionDateTime, transactionType);
+            Transaction transaction = new Transaction(transactionId, label, amount, transactionDateTime, type);
             transactions.add(transaction);
         }
         } catch (SQLException e) {
@@ -109,13 +106,13 @@ public class AccountDAO implements CrudOperations<Account> {
     private Account convertToAccount(ResultSet resultSet) throws SQLException {
         int accountId = resultSet.getInt("accountId");
         String accountName = resultSet.getString("accountName");
-        Balance balance = (Balance) resultSet.getObject("balance");
+        double balance = (double) resultSet.getObject("balance");
+        List<Transaction> listTransaction = getTransactionsForAccount(accountId);
         Currency currency = (Currency) resultSet.getObject("idCurrencyCount");
-        String accountType = resultSet.getString("accountType");
+        AccountType type = AccountType.valueOf(resultSet.getString("accountType"));
 
-        List<Transaction> listTransaction = getTransactionsForAccount(accountId); 
 
-        Account account = new Account(accountId, accountName, balance, currency, accountType);
+        Account account = new Account(accountId, accountName, balance, listTransaction, currency, type);
         account.getTransactions().addAll(listTransaction);
 
         return account;

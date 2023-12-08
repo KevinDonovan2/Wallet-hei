@@ -2,6 +2,7 @@ package com.wallet.DAO;
 
 import com.wallet.Utils.CrudOperations;
 import com.wallet.entities.Transaction;
+import com.wallet.entities.TransactionType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TransactionDAO implements CrudOperations<Transaction> {
@@ -39,7 +41,7 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 
     @Override
 	public List<Transaction> saveAll(List<Transaction> toSave) {
-	    String query = "INSERT INTO transactions (transactionId, label, amount, transactionDateTime, transactionType) " +
+	    String query = "INSERT INTO transactions (transactionId, label, amount, transactionDateTime, type) " +
 		           "VALUES (?, ?, ?, ?, ?)";
 	    List<Transaction> savedTransactions = new ArrayList<>();
 
@@ -50,7 +52,7 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 		        preparedStatement.setString(2, transaction.getlabel());
 		        preparedStatement.setDouble(3, transaction.getAmount());
                 preparedStatement.setObject(4, transaction.getTransactionDateTime());
-		        preparedStatement.setString(5, transaction.getTransactionTypeId());
+		        preparedStatement.setString(5, String.valueOf(transaction.getType()));
 
 		        int result = preparedStatement.executeUpdate();
 		        if (result > 0) {
@@ -66,7 +68,7 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 	}
     @Override
 	public Transaction save(Transaction toSave) {
-	    String query = "INSERT INTO transactions (transactionId, label, amount, transactionDateTime, transactionType) " +
+	    String query = "INSERT INTO transactions (transactionId, label, amount, transactionDateTime, type) " +
 		           "VALUES (?, ?, ?, ?, ?)";
 
 	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -74,7 +76,7 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 		preparedStatement.setString(2, toSave.getlabel());
 		preparedStatement.setDouble(3, toSave.getAmount());
 		preparedStatement.setObject(4, toSave.getTransactionDateTime());
-		preparedStatement.setString(5, toSave.getTransactionTypeId());
+		preparedStatement.setString(5, String.valueOf(toSave.getType()));
 
 		int result = preparedStatement.executeUpdate();
 		if (result > 0) {
@@ -89,14 +91,14 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 
     @Override
 	public Transaction update(Transaction toUpdate) {
-	    String query = "UPDATE transactions SET label = ?, amount = ?, transactionDateTime = ?, transactionType = ? " +
+	    String query = "UPDATE transactions SET label = ?, amount = ?, transactionDateTime = ?, type = ? " +
 		           "WHERE transactionId = ?";
 
 	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 		preparedStatement.setString(1, toUpdate.getlabel());
 		preparedStatement.setDouble(2, toUpdate.getAmount());
 		preparedStatement.setObject(3, toUpdate.getTransactionDateTime());
-		preparedStatement.setString(4, toUpdate.getTransactionTypeId());
+		preparedStatement.setString(4, String.valueOf(toUpdate.getType()));
 		preparedStatement.setInt(5, toUpdate.getTransactionId());
 
 		int result = preparedStatement.executeUpdate();
@@ -135,10 +137,10 @@ public class TransactionDAO implements CrudOperations<Transaction> {
         int transactionId = resultSet.getInt("transactionId");
         String label = resultSet.getString("label");
         double amount = resultSet.getDouble("amount");
-        LocalDateTime transactionDateTime = resultSet.getObject("transactionDateTime", LocalDateTime.class);
-        String transactionType = resultSet.getString("transactionType");
+        Date transactionDateTime = resultSet.getObject("transactionDateTime", Date.class);
+		TransactionType type = TransactionType.valueOf(resultSet.getString("type"));
 
-        return new Transaction(transactionId, label, amount, transactionDateTime, transactionType);
+        return new Transaction(transactionId, label, amount, transactionDateTime, type);
     }
 }
 
