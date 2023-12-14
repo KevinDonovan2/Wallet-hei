@@ -95,8 +95,10 @@ public class AccountDAO implements CrudOperations<Account> {
             String label = resultSet.getString("label");
             double amount = resultSet.getDouble("amount");
             Date transactionDateTime = resultSet.getTimestamp("transactionDateTime");
-            TransactionType type = TransactionType.valueOf(resultSet.getString("transactionType"));
-            Transaction transaction = new Transaction(transactionId, label, amount, transactionDateTime, type);
+            String categoryId = resultSet.getString("categoryId");
+            TransactionCategory category = new TransactionCategory();
+            category.setIdCategory(categoryId);
+            Transaction transaction = new Transaction(transactionId, label, amount, transactionDateTime, category);
             transactions.add(transaction);
         }
         } catch (SQLException e) {
