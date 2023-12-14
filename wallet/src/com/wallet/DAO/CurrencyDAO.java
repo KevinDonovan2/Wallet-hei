@@ -7,45 +7,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 public class CurrencyDAO implements CrudOperations<Currency> {
     private Connection connection;
-
     public CurrencyDAO(Connection connection) {
         this.connection = connection;
     }
-
     @Override
     public List<Currency> findAll() {
         List<Currency> listCurrency = new ArrayList<>();
         String query = "SELECT * FROM currency";
-
         try (PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-
             while (resultSet.next()) {
                 listCurrency.add(convertToCurrency(resultSet));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return listCurrency;
     }
-
     @Override
     public List<Currency> saveAll(List<Currency> toSave){
         String query = "INSERT INTO currency (currencyId, currencyName, currencyCode) VALUES (?, ?, ?)";
         List<Currency> savedCurrency = new ArrayList<>();
-
         try {
             for (Currency currency : toSave) {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                    preparedStatement.setInt(1, currency.getCurrencyId());
+                    preparedStatement.setString(1, currency.getCurrencyId());
                     preparedStatement.setString(2, currency.getCurrencyName());
                     preparedStatement.setString(3, currency.getCurrencyCode());
-
                     int result = preparedStatement.executeUpdate();
                     if (result > 0) {
                         savedCurrency.add(currency);
@@ -55,50 +45,47 @@ public class CurrencyDAO implements CrudOperations<Currency> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return savedCurrency;
     }
-
     @Override
     public Currency save(Currency currency) {
-        String query = "INSERT INTO currency (currencyId, currencyName, currencyCode) VALUES (?, ?, ?)";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, currency.getCurrencyId());
-            preparedStatement.setString(2, currency.getCurrencyName());
-            preparedStatement.setString(3, currency.getCurrencyCode());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (currency.getCurrencyId() == null) {
+            String insertQuery = "INSERT INTO currency (currencyName, currencyCode) VALUES (?, ?)";
+            try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                insertStatement.setString(1, currency.getCurrencyName());
+                insertStatement.setString(2, currency.getCurrencyCode());
+                int rowsAffected = insertStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        String currencyId = generatedKeys.getString(1);
+                        currency.setCurrencyId(currencyId);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            String updateQuery = "UPDATE currency SET currencyName = ?, currencyCode = ? WHERE currencyId = ?";
+            try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                updateStatement.setString(1, currency.getCurrencyName());
+                updateStatement.setString(2, currency.getCurrencyCode());
+                updateStatement.setString(3, currency.getCurrencyId());
+                int rowsAffected = updateStatement.executeUpdate();
+                if (rowsAffected <= 0) {
+                    System.out.println("Currency ID has not been updated : " + currency.getCurrencyId());
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
         return currency;
     }
-    @Override
-    public Currency update(Currency toUpdate) {
-        String query = "UPDATE currency SET currencyName = ?, currencyCode = ? WHERE currencyId = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, toUpdate.getCurrencyName());
-            preparedStatement.setString(2, toUpdate.getCurrencyCode());
-            preparedStatement.setInt(3, toUpdate.getCurrencyId());
-
-            int result = preparedStatement.executeUpdate();
-            if (result > 0) {
-                return toUpdate;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     @Override
     public Currency delete(Currency toDelete) {
         String query = "DELETE FROM currency WHERE currencyId = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, toDelete.getCurrencyId());
+            preparedStatement.setString(1, toDelete.getCurrencyId());
             int result = preparedStatement.executeUpdate();
             if (result > 0) {
                 return toDelete;
@@ -109,7 +96,7 @@ public class CurrencyDAO implements CrudOperations<Currency> {
         return null;
     }
     private Currency convertToCurrency(ResultSet resultSet) throws SQLException {
-        int currencyId = resultSet.getInt("currencyId");
+        String currencyId = resultSet.getString("currencyId");
         String currencyName = resultSet.getString("currencyName");
         String currencyCode = resultSet.getString("currencyCode");
         return new Currency(currencyId, currencyName, currencyCode);
