@@ -11,5 +11,5 @@ public class Transaction {
     private String label;
     private double amount;
     private Date transactionDateTime;
-    private TransactionType type;
+    private TransactionCategory category;
 }
