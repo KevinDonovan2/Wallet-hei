@@ -3,10 +3,10 @@ CREATE OR REPLACE FUNCTION sold_in_out(
     IN date_start TIMESTAMP,
     IN date_end TIMESTAMP
 )
-RETURNS DECIMAL(9,6) AS $$
+RETURNS DECIMAL(12,6) AS $$
 DECLARE
-    total_in DECIMAL(9,6);
-    total_out DECIMAL(9,6);
+    total_in DECIMAL(12,6);
+    total_out DECIMAL(12,6);
 BEGIN
     -- Calculer la somme des entrées
     SELECT COALESCE(SUM(montant), 0)
