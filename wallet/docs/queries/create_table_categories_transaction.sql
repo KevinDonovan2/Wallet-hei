@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS;
 CREATE TABLE IF NOT EXISTS categories (
     idCategory varchar(255) primary key default gen_random_uuid(),
     categoryName varchar(100) unique not null,
-    transactionType varchar(100) not null CHECK (transactionType IN ('Credit', 'debit', 'pret'))
+    transactionType varchar(100) not null CHECK (transactionType IN ('Credit', 'debit'))
 );
 -- response TD2 1.e. Les categories dans le Wallet by BudgetBakers 
 --NOURRITURE ET BOISSONS
