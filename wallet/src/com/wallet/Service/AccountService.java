@@ -14,12 +14,13 @@ public class AccountService {
                 transaction.getLabel(),
                 transaction.getAmount(),
                 transaction.getTransactionDateTime(),
+
                 transaction.getCategory()
             );
             account.getTransactions().add(newTransaction);
 
             if (transaction.getCategory().getTransactionType() == TransactionType.debit) {
-                updateBalance(account, -transaction.getAmount());
+     updateBalance(account, -transaction.getAmount());
             } else {
                 updateBalance(account, transaction.getAmount());
             }
@@ -44,6 +45,7 @@ public class AccountService {
 
         for (Transaction transaction : account.getTransactions()) {
             if (transaction.getTransactionDateTime().before(dateTime) || transaction.getTransactionDateTime().equals(dateTime)) {
+              
                 if (transaction.getCategory().getTransactionType() == TransactionType.credit) {
                     balance += transaction.getAmount();
                 } else if (transaction.getCategory().getTransactionType() == TransactionType.debit) {

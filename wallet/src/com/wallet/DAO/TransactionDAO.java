@@ -41,7 +41,9 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 		        preparedStatement.setString(2, transaction.getLabel());
 		        preparedStatement.setDouble(3, transaction.getAmount());
                 preparedStatement.setObject(4, transaction.getTransactionDateTime());
+          
 		        preparedStatement.setString(5, transaction.getCategory().getIdCategory());
+          
 		        int result = preparedStatement.executeUpdate();
 		        if (result > 0) {
 		            savedTransactions.add(transaction);
@@ -62,6 +64,7 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 				insertStatement.setDouble(2, transaction.getAmount());
 				insertStatement.setObject(3, transaction.getTransactionDateTime());
 				insertStatement.setString(4, transaction.getCategory().getIdCategory());
+
 				int rowsAffected = insertStatement.executeUpdate();
 				if (rowsAffected > 0) {
 					ResultSet generatedKeys = insertStatement.getGeneratedKeys();
@@ -81,6 +84,7 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 				updateStatement.setDouble(3, transaction.getAmount());
 				updateStatement.setObject(4, transaction.getTransactionDateTime());
 				updateStatement.setString(5, transaction.getCategory().getIdCategory());
+
 				int rowsAffected = updateStatement.executeUpdate();
 				if (rowsAffected <= 0) {
 					System.out.println("Transaction ID has not been updated : " + transaction.getTransactionId());
