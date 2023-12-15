@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 public class DatabaseConf {
-    private Connection connection;
+    private static Connection connection;
     public DatabaseConf(){
         String jdbcurl = System.getenv("DB_URL");
         String username = System.getenv("DB_USER");
@@ -19,7 +19,7 @@ public class DatabaseConf {
             throw new RuntimeException("Unable to connect to database.", e);
         }
     }
-    public Connection getConnection() {
+    public static Connection getConnection() {
         return connection;
     }
 }

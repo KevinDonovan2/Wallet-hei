@@ -1,10 +1,12 @@
 package com.wallet.DAO;
 import com.wallet.Utils.CrudOperations;
+import com.wallet.dbconnection.DatabaseConf;
 import com.wallet.entities.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -118,5 +120,35 @@ public class AccountDAO implements CrudOperations<Account> {
         Account account = new Account(accountId, accountName, balance, listTransaction, currency, type);
         account.getTransactions().addAll(listTransaction);
         return account;
+    }
+
+    public List<CategoryAmount> getAllCategoryAmount(String accountId, LocalDate startDate, LocalDate endDate) throws SQLException {
+        String query = "SELECT * FROM calculateCategoryAmount(?, ?, ?);";
+
+        List<CategoryAmount> results = new ArrayList<>();
+
+        try (Connection connection = DatabaseConf.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, accountId);
+            preparedStatement.setObject(2, startDate);
+            preparedStatement.setObject(3, endDate);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String CATEGORY_LABEL = "categoryName";
+                    String TOTAL_AMOUNT = "totalAmount";
+
+                    CategoryAmount result = new CategoryAmount(
+                            resultSet.getString(CATEGORY_LABEL),
+                            resultSet.getBigDecimal(TOTAL_AMOUNT)
+                    );
+
+                    results.add(result);
+                }
+            }
+        }
+
+        return results;
     }
 }
