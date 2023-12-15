@@ -1,6 +1,7 @@
 package com.wallet.DAO;
 import com.wallet.Utils.CrudOperations;
 import com.wallet.entities.Transaction;
+import com.wallet.entities.TransactionCategory;
 import com.wallet.entities.TransactionType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,8 +31,8 @@ public class TransactionDAO implements CrudOperations<Transaction> {
     }
     @Override
 	public List<Transaction> saveAll(List<Transaction> toSave) {
-	    String query = "INSERT INTO transactions (transactionId, label, amount, transactionDateTime, type) " +
-		           "VALUES (?, ?, ?, ?, ?)";
+	    String query = "INSERT INTO transactions (transactionId, label, amount, transactionDateTime, categoryId) " +
+		           "VALUES (?, ?, ?, ?, ?, ?)";
 	    List<Transaction> savedTransactions = new ArrayList<>();
 	    try {
 		for (Transaction transaction : toSave) {
@@ -40,7 +41,9 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 		        preparedStatement.setString(2, transaction.getLabel());
 		        preparedStatement.setDouble(3, transaction.getAmount());
                 preparedStatement.setObject(4, transaction.getTransactionDateTime());
-		        preparedStatement.setString(5, String.valueOf(transaction.getType()));
+          
+		        preparedStatement.setString(5, transaction.getCategory().getIdCategory());
+          
 		        int result = preparedStatement.executeUpdate();
 		        if (result > 0) {
 		            savedTransactions.add(transaction);
@@ -55,12 +58,13 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 	@Override
 	public Transaction save(Transaction transaction) {
 		if (transaction.getTransactionId() == null) {
-			String insertQuery = "INSERT INTO transactions (label, amount, transactionDateTime, type) VALUES (?, ?, ?, ?)";
+			String insertQuery = "INSERT INTO transactions (label, amount, transactionDateTime, categoryId) VALUES (?, ?, ?, ?, ?)";
 			try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
 				insertStatement.setString(1, transaction.getLabel());
 				insertStatement.setDouble(2, transaction.getAmount());
 				insertStatement.setObject(3, transaction.getTransactionDateTime());
-				insertStatement.setString(4, String.valueOf(transaction.getType()));
+				insertStatement.setString(4, transaction.getCategory().getIdCategory());
+
 				int rowsAffected = insertStatement.executeUpdate();
 				if (rowsAffected > 0) {
 					ResultSet generatedKeys = insertStatement.getGeneratedKeys();
@@ -73,13 +77,14 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 				e.printStackTrace();
 			}
 		} else {
-			String updateQuery = "UPDATE transactions SET label = ?, amount = ?, transactionDateTime = ?, type = ? WHERE transactionId = ?";
+			String updateQuery = "UPDATE transactions SET label = ?, amount = ?, transactionDateTime = ?, categoryId = ? WHERE transactionId = ?";
 			try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
-				updateStatement.setString(1, transaction.getLabel());
-				updateStatement.setDouble(2, transaction.getAmount());
-				updateStatement.setObject(3, transaction.getTransactionDateTime());
-				updateStatement.setString(4, String.valueOf(transaction.getType()));
-				updateStatement.setString(5, transaction.getTransactionId());
+				updateStatement.setString(1, transaction.getTransactionId());
+				updateStatement.setString(2, transaction.getLabel());
+				updateStatement.setDouble(3, transaction.getAmount());
+				updateStatement.setObject(4, transaction.getTransactionDateTime());
+				updateStatement.setString(5, transaction.getCategory().getIdCategory());
+
 				int rowsAffected = updateStatement.executeUpdate();
 				if (rowsAffected <= 0) {
 					System.out.println("Transaction ID has not been updated : " + transaction.getTransactionId());
@@ -107,13 +112,16 @@ public class TransactionDAO implements CrudOperations<Transaction> {
 	    }
         return toDelete;
 	}
-    private Transaction convertToTransaction(ResultSet resultSet) throws SQLException {
-        String transactionId = resultSet.getString("transactionId");
-        String label = resultSet.getString("label");
-        double amount = resultSet.getDouble("amount");
-        Date transactionDateTime = resultSet.getObject("transactionDateTime", Date.class);
-		TransactionType type = TransactionType.valueOf(resultSet.getString("type"));
-        return new Transaction(transactionId, label, amount, transactionDateTime, type);
-    }
+	private Transaction convertToTransaction(ResultSet resultSet) throws SQLException {
+		String transactionId = resultSet.getString("transactionId");
+		String label = resultSet.getString("label");
+		double amount = resultSet.getDouble("amount");
+		Date transactionDateTime = resultSet.getObject("transactionDateTime", Date.class);
+		String idCategory = resultSet.getString("idCategory");
+		String categoryName = resultSet.getString("categoryName");
+		TransactionType transactionType = TransactionType.valueOf(resultSet.getString("transactionType"));
+		TransactionCategory category = new TransactionCategory(idCategory, categoryName, transactionType);
+		return new Transaction(transactionId, label, amount, transactionDateTime, category);
+	}
 }
 

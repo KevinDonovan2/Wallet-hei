@@ -14,12 +14,13 @@ public class AccountService {
                 transaction.getLabel(),
                 transaction.getAmount(),
                 transaction.getTransactionDateTime(),
-                transaction.getType()
+
+                transaction.getCategory()
             );
             account.getTransactions().add(newTransaction);
 
-            if (transaction.getType() == TransactionType.DEBIT) {
-                updateBalance(account, -transaction.getAmount());
+            if (transaction.getCategory().getTransactionType() == TransactionType.debit) {
+     updateBalance(account, -transaction.getAmount());
             } else {
                 updateBalance(account, transaction.getAmount());
             }
@@ -44,9 +45,10 @@ public class AccountService {
 
         for (Transaction transaction : account.getTransactions()) {
             if (transaction.getTransactionDateTime().before(dateTime) || transaction.getTransactionDateTime().equals(dateTime)) {
-                if (transaction.getType() == TransactionType.CREDIT) {
+              
+                if (transaction.getCategory().getTransactionType() == TransactionType.credit) {
                     balance += transaction.getAmount();
-                } else if (transaction.getType() == TransactionType.DEBIT) {
+                } else if (transaction.getCategory().getTransactionType() == TransactionType.debit) {
                     balance -= transaction.getAmount();
                 }
             }
@@ -59,9 +61,9 @@ public class AccountService {
         for (Transaction transaction : account.getTransactions()) {
             if ((transaction.getTransactionDateTime().after(startDateTime) || transaction.getTransactionDateTime().equals(startDateTime))
                     && transaction.getTransactionDateTime().before(endDateTime)) {
-                if (transaction.getType() == TransactionType.CREDIT) {
+                if (transaction.getCategory().getTransactionType() == TransactionType.credit) {
                     currentBalance += transaction.getAmount();
-                } else if (transaction.getType() == TransactionType.DEBIT) {
+                } else if (transaction.getCategory().getTransactionType() == TransactionType.debit) {
                     currentBalance -= transaction.getAmount();
                 }
                 balanceHistory.add(currentBalance);

@@ -1,8 +1,10 @@
 DROP TABLE IF EXISTS;
 CREATE TABLE IF NOT EXISTS transactions(
-    transactionId serial primary key,
+    transactionId varchar(255) primary key default gen_random_uuid(),
     label varchar(255) not null,
     amount double not null,
-    transactionDateTime timestamp,
-    transactionType varchar(20) CHECK (transactionType IN ('debit', 'credit', 'transfert')) not null
+    transactionDateTime timestamp
 );
+--Response TD2
+ALTER TABLE transactions
+ADD COLUMN IF NOT EXISTS categoryId varchar(255) not null REFERENCES categories(idCategory);

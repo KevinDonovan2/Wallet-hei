@@ -1,6 +1,6 @@
 package com.wallet.entities;
 
 public enum TransactionType {
-    CREDIT,
-    DEBIT
+    credit,
+    debit,
 }
