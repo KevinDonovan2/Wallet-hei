@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION sold_in_out(
-    IN account_id INT,
-    IN date_start TIMESTAMP,
-    IN date_end TIMESTAMP
+    IN accountId INT,
+    IN startDate TIMESTAMP,
+    IN endDate TIMESTAMP
 )
 RETURNS DECIMAL(12,6) AS $$
 DECLARE
@@ -13,16 +13,16 @@ BEGIN
     INTO total_in
     FROM transactions
     WHERE account_id = compte_id
-        AND transaction_date BETWEEN date_start AND date_end
-        AND type_transaction = 'ENTREE';
+        AND transaction_date BETWEEN startDate AND endDate
+        AND type_transaction = 'credit';
 
     -- Calculer la somme des sorties
     SELECT COALESCE(SUM(montant), 0)
     INTO total_out
     FROM transactions
     WHERE account_id = compte_id
-        AND transaction_date BETWEEN date_start AND date_end
-        AND type_transaction = 'SORTIE';
+        AND transaction_date BETWEEN startDate AND endDate
+        AND type_transaction = 'debit';
 
     -- Retourner la différence entre les entrées et les sorties
     RETURN total_in - total_out;

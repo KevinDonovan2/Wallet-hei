@@ -1,7 +1,7 @@
-CREATE OR REPLACE FUNCTION sum_by_category(
-    IN account_id INT,
-    IN date_start TIMESTAMP,
-    IN date_end TIMESTAMP
+CREATE OR REPLACE FUNCTION sold_by_category(
+    IN accountId INT,
+    IN startDate TIMESTAMP,
+    IN endDate TIMESTAMP
 )
 RETURNS TABLE (category_name VARCHAR(255), total_amount DECIMAL(12,6)) AS $$
 BEGIN
@@ -12,6 +12,6 @@ BEGIN
     FROM categories c
     LEFT JOIN transactions t ON c.category_id = t.category_id
                           AND t.account_id = account_id
-                          AND t.transaction_date BETWEEN date_start AND date_end
+                          AND t.transaction_date BETWEEN startDate AND endDate
     GROUP BY c.category_name;
 END $$;
